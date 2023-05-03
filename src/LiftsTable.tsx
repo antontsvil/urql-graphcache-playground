@@ -14,7 +14,7 @@ query  {
     capacity
   }
 }`,
-    // requestPolicy: "network-only",
+    requestPolicy: "network-only",
   });
   return (
     <div className="App">

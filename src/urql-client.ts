@@ -1,8 +1,9 @@
 import { devtoolsExchange } from "@urql/devtools";
-import { Client, fetchExchange } from "@urql/core";
+import { Client, fetchExchange, gql } from "@urql/core";
 import { cacheExchange as cacheExchange2 } from "@urql/exchange-graphcache";
 import { retryExchange } from "@urql/exchange-retry";
 import schema from "./schema.json";
+import { LiftQueryFields } from "./queries";
 
 const url = "https://snowtooth.moonhighway.com/";
 
@@ -14,7 +15,9 @@ const exchanges: any[] = [
       Query: {
         allLifts(result, args, cache, info) {
           for (const lift of (result?.allLifts as any[]) ?? []) {
-            cache.link("Query", "Lift", { id: lift.id }, lift);
+            const query = gql`fragment _ on Lift { ${LiftQueryFields} }`;
+            const variables = { id: lift.id };
+            cache.writeFragment(query, lift, variables);
           }
         },
       },

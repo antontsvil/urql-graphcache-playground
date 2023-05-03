@@ -2,18 +2,12 @@ import React from "react";
 import "./LiftsTable.css";
 import { useQuery } from "urql";
 import { useParams } from "react-router";
+import { LiftQuery } from "./queries";
 
 function Lift() {
   const { id } = useParams();
   const [lift, execLift] = useQuery({
-    query: `query($id: ID!) {
-       Lift(id:$id)  {
-        id
-        name
-        status
-        capacity
-      }
-    }`,
+    query: LiftQuery,
     variables: { id },
   });
 
