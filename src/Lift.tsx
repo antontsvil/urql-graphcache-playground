@@ -12,6 +12,7 @@ function Lift() {
         name
         status
         capacity
+        night
       }
     }`,
     variables: { id },
