@@ -1,21 +1,22 @@
 import React from "react";
 import "./LiftsTable.css";
-import { useQuery } from "urql";
+
 import { Link } from "react-router-dom";
+import { gql, useQuery } from "@apollo/client";
+
+const query = gql`
+  query {
+    allLifts {
+      id
+      name
+      status
+      capacity
+    }
+  }
+`;
 
 function LiftsTable() {
-  const [lifts, execLifts] = useQuery({
-    query: `
-query  {
-  allLifts {
-    id
-    name
-    status
-    capacity
-  }
-}`,
-    // requestPolicy: "network-only",
-  });
+  const result = useQuery(query);
   return (
     <div className="App">
       <table>
@@ -26,7 +27,7 @@ query  {
           </tr>
         </thead>
         <tbody>
-          {lifts?.data?.allLifts?.map((u: any) => (
+          {result?.data?.allLifts?.map((u: any) => (
             <tr key={u.id}>
               <td>
                 <Link to={`/lift/${u.id}`}>{u.id}</Link>
